@@ -1,10 +1,14 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include "Constants.h"
+#include "Game.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Tower Defense");
+    sf::RenderWindow window(sf::VideoMode(td::constants::k_screenWidth, td::constants::k_screenHeight), "Tower Defense");
+
+    td::Game game;
 
     while (window.isOpen())
     {
@@ -15,8 +19,14 @@ int main()
                 window.close();
         }
 
-        window.draw(sf::CircleShape(25));
-        window.display();
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+
+        game.Update(mousePosition);
+
+        game.Render(window);
+
+    	window.display();
     }
 
     return 0;
