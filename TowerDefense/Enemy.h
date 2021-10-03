@@ -7,11 +7,22 @@ namespace td {
 	{
 	public:
 		Enemy();
+		Enemy(sf::Color colour);
 
 		void Update();
 
 		void Render(sf::RenderWindow& window) const;
 
+		enum class eState
+		{
+			e_alive,
+			e_dead,
+			e_complete
+		};
+
+		eState GetState() const { return m_state; }
+
+		void Spawn();
 
 	private:
 		int m_currentWaypointIndex;
@@ -21,7 +32,10 @@ namespace td {
 		float m_speed;
 		sf::Vector2f m_position;
 
+		sf::Color m_colour;
+
 		bool m_visible;
+		eState m_state;
 
 		void Move();
 		void CheckWaypoints();

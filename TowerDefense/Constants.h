@@ -9,6 +9,8 @@ namespace td
 		constexpr int k_screenWidth = 1280;
 		constexpr int k_screenHeight = 720;
 
+		constexpr float k_timeBetweenSpawn = 1.5f;
+
 		constexpr float k_minDistance = 0.5f;
 
 		const static std::array<sf::Vector2f, 10> LEVEL_ONE_WAYPOINTS {
