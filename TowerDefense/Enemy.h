@@ -25,5 +25,6 @@ namespace td {
 
 		void Move();
 		void CheckWaypoints();
+		void CalculateMovementVector();
 	};
 }

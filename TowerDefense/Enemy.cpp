@@ -7,11 +7,11 @@
 td::Enemy::Enemy() :
 	m_currentWaypointIndex(1),
 	m_currentGoalPosition(td::constants::LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
-	m_currentMovementVector({ 1.f, 0.f }),
 	m_speed(100.f),
 	m_position(0.f, 360.f),
 	m_visible(true)
 {
+	CalculateMovementVector();
 }
 
 void td::Enemy::Update()
@@ -43,9 +43,9 @@ void td::Enemy::Move()
 
 void td::Enemy::CheckWaypoints()
 {
-	sf::Vector2f ab = m_currentGoalPosition - m_position;
+	const sf::Vector2f hereToGoalPosition = m_currentGoalPosition - m_position;
 
-	const float mag = helper_functions::sqr_magnitude(ab);
+	const float mag = helper_functions::sqr_magnitude(hereToGoalPosition);
 
 	if (helper_functions::definitely_less_than(mag, constants::k_minDistance * constants::k_minDistance))
 	{
@@ -53,19 +53,21 @@ void td::Enemy::CheckWaypoints()
 		{
 			m_currentGoalPosition = constants::LEVEL_ONE_WAYPOINTS[++m_currentWaypointIndex];
 
-			ab = m_currentGoalPosition - m_position;
-
-			helper_functions::normalise_vector(ab);
-
-			m_currentMovementVector = ab;
+			CalculateMovementVector();
 		}
 		else
 		{
 			m_visible = false;
 		}
 	}
+}
 
+void td::Enemy::CalculateMovementVector()
+{
 
+	sf::Vector2f ab = m_currentGoalPosition - m_position;
 
+	helper_functions::normalise_vector(ab);
 
+	m_currentMovementVector = ab;
 }
