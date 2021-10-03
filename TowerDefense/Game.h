@@ -2,6 +2,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Enemy.h"
 #include "Level.h"
 
 namespace td {
@@ -13,5 +14,6 @@ namespace td {
 
 	private:
 		Level m_level;
+		Enemy m_enemy;
 	};
 }

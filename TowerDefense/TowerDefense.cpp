@@ -3,6 +3,7 @@
 
 #include "Constants.h"
 #include "Game.h"
+#include "GlobalTime.h"
 
 int main()
 {
@@ -19,8 +20,9 @@ int main()
                 window.close();
         }
 
-        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+        td::GlobalTime::Instance().OnFrameBegin();
 
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
         game.Update(mousePosition);
 
