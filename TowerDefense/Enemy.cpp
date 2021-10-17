@@ -6,7 +6,7 @@
 
 td::Enemy::Enemy() :
 	m_currentWaypointIndex(1),
-	m_currentGoalPosition(td::constants::LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
+	m_currentGoalPosition(td::constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
 	m_speed(100.f),
 	m_position(-1000.f, 360.f),
 	m_colour(239, 29, 231),
@@ -18,7 +18,7 @@ td::Enemy::Enemy() :
 
 td::Enemy::Enemy(const sf::Color colour) :
 	m_currentWaypointIndex(1),
-	m_currentGoalPosition(td::constants::LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
+	m_currentGoalPosition(td::constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
 	m_speed(100.f),
 	m_position(0.f, 360.f),
 	m_colour(colour),
@@ -66,11 +66,11 @@ void td::Enemy::CheckWaypoints()
 
 	const float mag = helper_functions::sqr_magnitude(hereToGoalPosition);
 
-	if (helper_functions::definitely_less_than(mag, constants::k_minDistance * constants::k_minDistance))
+	if (helper_functions::definitely_less_than(mag, constants::k_MIN_DISTANCE * constants::k_MIN_DISTANCE))
 	{
-		if (m_currentWaypointIndex < static_cast<int>(constants::LEVEL_ONE_WAYPOINTS.size() - 1))
+		if (m_currentWaypointIndex < static_cast<int>(constants::k_LEVEL_ONE_WAYPOINTS.size() - 1))
 		{
-			m_currentGoalPosition = constants::LEVEL_ONE_WAYPOINTS[++m_currentWaypointIndex];
+			m_currentGoalPosition = constants::k_LEVEL_ONE_WAYPOINTS[++m_currentWaypointIndex];
 
 			CalculateMovementVector();
 		}

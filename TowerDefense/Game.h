@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <deque>
 
+#include "Constants.h"
 #include "Enemy.h"
 #include "Level.h"
 
@@ -21,6 +22,21 @@ namespace td {
 		float m_waveTimer;
 		int m_waveEnemyCount;
 
+		enum class eEnemyType {
+			e_red, e_green, e_blue
+		};
+
+		struct EnemyData
+		{
+			explicit EnemyData(const eEnemyType t) : m_Type(t) { }
+
+			eEnemyType m_Type;
+		};
+
+		// Each index of the array corresponds to a specific wave
+		std::array<std::vector<EnemyData>, constants::k_MAX_WAVES> m_gameEnemyData;
+
 		void UpdateWaveSpawn();
+		bool ReadLevelData(const std::string& fileName);
 	};
 }

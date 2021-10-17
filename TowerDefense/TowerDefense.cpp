@@ -7,7 +7,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(td::constants::k_screenWidth, td::constants::k_screenHeight), "Tower Defense");
+    sf::RenderWindow window(sf::VideoMode(td::constants::k_SCREEN_WIDTH, td::constants::k_SCREEN_HEIGHT), "Tower Defense");
 
     td::Game game;
 

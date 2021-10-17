@@ -6,14 +6,15 @@ namespace td
 {
 	namespace constants
 	{
-		constexpr int k_screenWidth = 1280;
-		constexpr int k_screenHeight = 720;
+		constexpr int k_SCREEN_WIDTH = 1280;
+		constexpr int k_SCREEN_HEIGHT = 720;
 
-		constexpr float k_timeBetweenSpawn = 1.5f;
+		constexpr float k_TIME_BETWEEN_SPAWN = 1.5f;
+		constexpr int k_MAX_WAVES = 2;
 
-		constexpr float k_minDistance = 0.5f;
+		constexpr float k_MIN_DISTANCE = 0.5f;
 
-		const static std::array<sf::Vector2f, 10> LEVEL_ONE_WAYPOINTS {
+		const static std::array<sf::Vector2f, 10> k_LEVEL_ONE_WAYPOINTS {
 			sf::Vector2f(0.f, 360.f),
 			sf::Vector2f(300.f, 360.f),
 			sf::Vector2f(300.f, 135.f),
