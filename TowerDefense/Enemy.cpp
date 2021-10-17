@@ -6,7 +6,7 @@
 
 td::Enemy::Enemy() :
 	m_currentWaypointIndex(1),
-	m_currentGoalPosition(td::constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
+	m_currentGoalPosition(constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
 	m_speed(100.f),
 	m_position(-1000.f, 360.f),
 	m_colour(239, 29, 231),
@@ -16,15 +16,32 @@ td::Enemy::Enemy() :
 	CalculateMovementVector();
 }
 
-td::Enemy::Enemy(const sf::Color colour) :
+td::Enemy::Enemy(eEnemyType type) :
 	m_currentWaypointIndex(1),
-	m_currentGoalPosition(td::constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
+	m_currentGoalPosition(constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
 	m_speed(100.f),
 	m_position(0.f, 360.f),
-	m_colour(colour),
 	m_visible(false),
 	m_state(eState::e_alive)
 {
+	switch (type)
+	{
+	case eEnemyType::e_red:
+		m_speed = 100.f;
+		m_colour = sf::Color::Red;
+		break;
+	case eEnemyType::e_green:
+		m_speed = 300.f;
+		m_colour = sf::Color::Green;
+		break;
+	case eEnemyType::e_blue:
+		m_speed = 150.f;
+		m_colour = sf::Color::Blue;
+		break;
+	default: ;
+	}
+
+
 	CalculateMovementVector();
 }
 

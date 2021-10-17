@@ -19,12 +19,13 @@ namespace td {
 		Level m_level;
 		std::deque<Enemy> m_enemies;
 
-		float m_waveTimer;
-		int m_waveEnemyCount;
+		float m_timeBetweenSpawns;
 
-		enum class eEnemyType {
-			e_red, e_green, e_blue
-		};
+		int m_enemiesSpawnedSoFar;
+		int m_enemyCountThisWave;
+
+		int m_currentWave;
+		bool m_shouldStartNextWave;
 
 		struct EnemyData
 		{
@@ -36,6 +37,7 @@ namespace td {
 		// Each index of the array corresponds to a specific wave
 		std::array<std::vector<EnemyData>, constants::k_MAX_WAVES> m_gameEnemyData;
 
+		void StartSpawnNextWave();
 		void UpdateWaveSpawn();
 		bool ReadLevelData(const std::string& fileName);
 	};

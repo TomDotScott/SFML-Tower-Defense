@@ -10,24 +10,58 @@
 
 
 td::Game::Game() :
-	m_waveTimer(0.f),
-	m_waveEnemyCount(0)
+	m_timeBetweenSpawns(0.f),
+	m_enemiesSpawnedSoFar(0),
+	m_enemyCountThisWave(0),
+	m_currentWave(0),
+	m_shouldStartNextWave(true)
 {
 	ReadLevelData("Assets/waves.csv");
-
-	for (int i = 0; i < 10; i++)
-	{
-		m_enemies.emplace_back(sf::Color::Red);
-	}
 }
 
 void td::Game::Update(const sf::Vector2i& mousePosition)
 {
-	UpdateWaveSpawn();
-
-	for (auto& enemy : m_enemies)
+	if (m_shouldStartNextWave) {
+		StartSpawnNextWave();
+		m_shouldStartNextWave = false;
+	}
+	else
 	{
-		enemy.Update();
+		UpdateWaveSpawn();
+	}
+
+	if (!m_enemies.empty()) {
+
+		for (auto& enemy : m_enemies)
+		{
+			enemy.Update();
+		}
+
+		// If the enemies are dead, or they have completed the track, remove them
+
+		/*m_enemies.erase(std::remove(m_enemies.begin(), m_enemies.end(),
+			[](Enemy& e)
+			{
+				return e.GetState() != Enemy::eState::e_alive;
+			}
+		),
+			m_enemies.end()
+		);*/
+
+		std::erase_if(m_enemies, 
+			[](const Enemy& e)
+			{
+				return e.GetState() != Enemy::eState::e_alive;
+			}
+		);
+
+		printf("Enemies left: %i\n", m_enemies.size());
+	}
+	else
+	{
+		m_currentWave++;
+		m_enemiesSpawnedSoFar = 0;
+		m_shouldStartNextWave = true;
 	}
 }
 
@@ -41,16 +75,33 @@ void td::Game::Render(sf::RenderWindow& window) const
 	}
 }
 
+void td::Game::StartSpawnNextWave()
+{
+	// Get the data loaded from the csv
+	const std::vector<EnemyData>& enemyData = m_gameEnemyData[m_currentWave];
+
+	// Clear the enemies deque
+	m_enemies.clear();
+
+	m_enemyCountThisWave = static_cast<int>(enemyData.size());
+
+	// Loop through and load the m_enemies deque
+	for (const auto& enemy : enemyData)
+	{
+		m_enemies.emplace_back(enemy.m_Type);
+	}
+}
+
 void td::Game::UpdateWaveSpawn()
 {
-	m_waveTimer -= GlobalTime::DeltaTime();
+	m_timeBetweenSpawns -= GlobalTime::DeltaTime();
 
-	if (helper_functions::definitely_less_than(m_waveTimer, 0.f))
+	if (helper_functions::definitely_less_than(m_timeBetweenSpawns, 0.f))
 	{
-		if (m_waveEnemyCount < 10) {
-			m_enemies[m_waveEnemyCount++].Spawn();
+		if (m_enemiesSpawnedSoFar < m_enemyCountThisWave) {
+			m_enemies[m_enemiesSpawnedSoFar++].Spawn();
 
-			m_waveTimer = constants::k_TIME_BETWEEN_SPAWN;
+			m_timeBetweenSpawns = constants::k_TIME_BETWEEN_SPAWN;
 		}
 	}
 }
@@ -69,7 +120,7 @@ bool td::Game::ReadLevelData(const std::string& fileName)
 	// per row
 	while (std::getline(waveFile, line))
 	{
-		if(waveNum > constants::k_MAX_WAVES){ break; }
+		if (waveNum > constants::k_MAX_WAVES) { break; }
 
 		std::stringstream sep(line);
 		std::string field;
@@ -81,7 +132,7 @@ bool td::Game::ReadLevelData(const std::string& fileName)
 		while (std::getline(sep, field, ','))
 		{
 
-			if(field.size() != 1)
+			if (field.size() != 1)
 			{
 				printf("\nUnknown value %s at Line %i, char %i in %s\n", field.c_str(), waveNum + 1, (charNum + 1) * 2, fileName.c_str());
 				return false;

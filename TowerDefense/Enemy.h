@@ -3,11 +3,15 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace td {
+	enum class eEnemyType {
+		e_red, e_green, e_blue
+	};
+
 	class Enemy
 	{
 	public:
 		Enemy();
-		Enemy(sf::Color colour);
+		Enemy(eEnemyType type);
 
 		void Update();
 
