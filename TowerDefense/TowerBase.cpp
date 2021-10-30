@@ -29,3 +29,9 @@ void td::TowerBase::Render(sf::RenderWindow& window) const
 	tower.setPosition(m_position);
 	window.draw(tower);
 }
+
+bool td::TowerBase::IsPointInsideRadius(const sf::Vector2f position) const
+{
+	const sf::Vector2f dxy = position - m_position;
+	return std::powf(dxy.x, 2) + std::powf(dxy.y, 2) <= std::powf(m_rangeRadius, 2);
+}

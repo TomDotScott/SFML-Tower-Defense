@@ -43,12 +43,25 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 		// Update the towers
 		for(auto& tower : m_towers)
 		{
+			// TODO: To make this more efficient, split the screen into quadrants and only check collisions in each quadrant (might get complicated if a tower is on the border)
+			// check if any enemies are within the tower's radius
+			for (const auto& enemy : m_enemies)
+			{
+				if (tower.IsPointInsideRadius(enemy.GetPosition()))
+				{
+					printf("I'm in the radius\n");
+				}else
+				{
+					printf("I'm not in the radius\n");
+				}
+			}
+
 			tower.Update();
 		}
 
 		// If the enemies are dead, or they have completed the track, remove them
 		std::erase_if(m_enemies, 
-			[](const Enemy& e)
+			[](const Enemy& e) -> bool
 			{
 				return e.GetState() != Enemy::eState::e_alive;
 			}

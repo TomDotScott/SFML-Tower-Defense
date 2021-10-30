@@ -25,6 +25,8 @@ namespace td {
 		};
 
 		eState GetState() const { return m_state; }
+		sf::Vector2f GetPosition() const { return m_position; }
+
 
 		void Spawn();
 

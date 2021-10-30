@@ -11,6 +11,10 @@ namespace td {
 		virtual void Update();
 		virtual void Render(sf::RenderWindow& window) const;
 
+		float GetRadius() const { return m_rangeRadius; }
+		sf::Vector2f GetPosition() const { return m_position; }
+
+		bool IsPointInsideRadius(const sf::Vector2f position) const;
 
 	private:
 		float m_rangeRadius;
