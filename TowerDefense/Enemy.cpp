@@ -16,7 +16,7 @@ td::Enemy::Enemy() :
 	CalculateMovementVector();
 }
 
-td::Enemy::Enemy(eEnemyType type) :
+td::Enemy::Enemy(const eEnemyType type) :
 	m_currentWaypointIndex(1),
 	m_currentGoalPosition(constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
 	m_speed(100.f),
@@ -79,9 +79,49 @@ void td::Enemy::Move()
 
 void td::Enemy::CheckWaypoints()
 {
-	const sf::Vector2f hereToGoalPosition = m_currentGoalPosition - m_position;
+	const sf::Vector2f dxy = m_currentGoalPosition - m_position;
 
-	const float mag = helper_functions::sqr_magnitude(hereToGoalPosition);
+	// Check if it's overshot the waypoint
+	if (helper_functions::definitely_greater_than(m_currentMovementVector.x, 0.f))
+	{
+		printf("I'm moving right\n");
+		if (dxy.x < 0)
+		{
+			printf("I overshot my target!\n");
+			m_position.x = m_currentGoalPosition.x;
+		}
+	}
+	if (helper_functions::definitely_less_than(m_currentMovementVector.x, 0.f))
+	{
+		printf("I'm moving left\n");
+		if (dxy.x > 0)
+		{
+			printf("I overshot my target!\n");
+			m_position.x = m_currentGoalPosition.x;
+		}
+	}
+	if (helper_functions::definitely_greater_than(m_currentMovementVector.y, 0.f))
+	{
+		printf("I'm moving down\n");
+		if (dxy.y < 0)
+		{
+			printf("I overshot my target!\n");
+			m_position.y = m_currentGoalPosition.y;
+		}
+	}
+	if (helper_functions::definitely_less_than(m_currentMovementVector.y, 0.f))
+	{
+		printf("I'm moving up\n");
+		if (dxy.y > 0)
+		{
+			printf("I overshot my target!\n");
+			m_position.y = m_currentGoalPosition.y;
+		}
+	}
+
+
+
+	const float mag = helper_functions::sqr_magnitude(dxy);
 
 	if (helper_functions::definitely_less_than(mag, constants::k_MIN_DISTANCE * constants::k_MIN_DISTANCE))
 	{
@@ -101,7 +141,6 @@ void td::Enemy::CheckWaypoints()
 
 void td::Enemy::CalculateMovementVector()
 {
-
 	sf::Vector2f ab = m_currentGoalPosition - m_position;
 
 	helper_functions::normalise_vector(ab);

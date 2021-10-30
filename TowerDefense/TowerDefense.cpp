@@ -7,29 +7,35 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(td::constants::k_SCREEN_WIDTH, td::constants::k_SCREEN_HEIGHT), "Tower Defense");
+	sf::RenderWindow window(sf::VideoMode(td::constants::k_SCREEN_WIDTH, td::constants::k_SCREEN_HEIGHT), "Tower Defense");
 
-    td::Game game;
+	td::Game game;
 
-    while (window.isOpen())
-    {
-        sf::Event event{};
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+	bool windowInFocus = true;
 
-        td::GlobalTime::Instance().OnFrameBegin();
+	while (window.isOpen())
+	{
+		sf::Event event{};
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed) window.close();
+			if (event.type == sf::Event::GainedFocus) windowInFocus = true;
+			if (event.type == sf::Event::LostFocus) windowInFocus = false;
+		}
+		td::GlobalTime::OnFrameBegin();
 
-        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+		if (windowInFocus) {
 
-        game.Update(mousePosition);
 
-        game.Render(window);
+			sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-    	window.display();
-    }
+			game.Update(mousePosition);
 
-    return 0;
+			game.Render(window);
+		}
+
+		window.display();
+	}
+
+	return 0;
 }

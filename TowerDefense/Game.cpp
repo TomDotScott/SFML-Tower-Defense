@@ -55,7 +55,7 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 			}
 		);
 
-		printf("Enemies left: %i\n", m_enemies.size());
+		// printf("Enemies left: %i\n", m_enemies.size());
 	}
 	else
 	{
