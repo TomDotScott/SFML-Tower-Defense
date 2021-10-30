@@ -17,10 +17,13 @@ td::Game::Game() :
 	m_shouldStartNextWave(true)
 {
 	ReadLevelData("Assets/waves.csv");
+
+	m_towers.emplace_back(TowerBase({ 200, 270 }));
 }
 
 void td::Game::Update(const sf::Vector2i& mousePosition)
 {
+	// printf("Mouse Position: %i, %i\n", mousePosition.x, mousePosition.y);
 	if (m_shouldStartNextWave) {
 		StartSpawnNextWave();
 		m_shouldStartNextWave = false;
@@ -31,31 +34,25 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 	}
 
 	if (!m_enemies.empty()) {
-
+		// Update the enemies
 		for (auto& enemy : m_enemies)
 		{
 			enemy.Update();
 		}
 
+		// Update the towers
+		for(auto& tower : m_towers)
+		{
+			tower.Update();
+		}
+
 		// If the enemies are dead, or they have completed the track, remove them
-
-		/*m_enemies.erase(std::remove(m_enemies.begin(), m_enemies.end(),
-			[](Enemy& e)
-			{
-				return e.GetState() != Enemy::eState::e_alive;
-			}
-		),
-			m_enemies.end()
-		);*/
-
 		std::erase_if(m_enemies, 
 			[](const Enemy& e)
 			{
 				return e.GetState() != Enemy::eState::e_alive;
 			}
 		);
-
-		// printf("Enemies left: %i\n", m_enemies.size());
 	}
 	else
 	{
@@ -68,6 +65,11 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 void td::Game::Render(sf::RenderWindow& window) const
 {
 	m_level.Render(window);
+
+	for (const auto& tower : m_towers)
+	{
+		tower.Render(window);
+	}
 
 	for (const auto& enemy : m_enemies)
 	{

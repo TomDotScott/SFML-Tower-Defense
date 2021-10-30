@@ -6,6 +6,7 @@
 #include "Constants.h"
 #include "Enemy.h"
 #include "Level.h"
+#include "TowerBase.h"
 
 namespace td {
 	class Game
@@ -27,6 +28,9 @@ namespace td {
 		int m_currentWave;
 		bool m_shouldStartNextWave;
 
+		std::vector<TowerBase> m_towers;
+
+		// TODO: refactor this into a LevelData Class
 		struct EnemyData
 		{
 			explicit EnemyData(const eEnemyType t) : m_Type(t) { }

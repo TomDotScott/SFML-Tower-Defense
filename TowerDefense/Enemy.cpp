@@ -84,42 +84,32 @@ void td::Enemy::CheckWaypoints()
 	// Check if it's overshot the waypoint
 	if (helper_functions::definitely_greater_than(m_currentMovementVector.x, 0.f))
 	{
-		printf("I'm moving right\n");
 		if (dxy.x < 0)
 		{
-			printf("I overshot my target!\n");
 			m_position.x = m_currentGoalPosition.x;
 		}
 	}
 	if (helper_functions::definitely_less_than(m_currentMovementVector.x, 0.f))
 	{
-		printf("I'm moving left\n");
 		if (dxy.x > 0)
 		{
-			printf("I overshot my target!\n");
 			m_position.x = m_currentGoalPosition.x;
 		}
 	}
 	if (helper_functions::definitely_greater_than(m_currentMovementVector.y, 0.f))
 	{
-		printf("I'm moving down\n");
 		if (dxy.y < 0)
 		{
-			printf("I overshot my target!\n");
 			m_position.y = m_currentGoalPosition.y;
 		}
 	}
 	if (helper_functions::definitely_less_than(m_currentMovementVector.y, 0.f))
 	{
-		printf("I'm moving up\n");
 		if (dxy.y > 0)
 		{
-			printf("I overshot my target!\n");
 			m_position.y = m_currentGoalPosition.y;
 		}
 	}
-
-
 
 	const float mag = helper_functions::sqr_magnitude(dxy);
 
