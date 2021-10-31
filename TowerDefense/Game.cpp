@@ -36,7 +36,6 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 	}
 
 	if (!m_enemies.empty()) {
-		printf("Active enemies: %i\n", m_enemies.size());
 
 		// Update the enemies
 		for (auto& enemy : m_enemies)
@@ -125,6 +124,8 @@ void td::Game::CheckCollisions()
 
 void td::Game::StartSpawnNextWave()
 {
+	printf("STARTING WAVE: %i\n", m_currentWave + 1);
+
 	// Get the data loaded from the csv
 	const std::vector<EnemyData>& enemyData = m_gameEnemyData[m_currentWave];
 
