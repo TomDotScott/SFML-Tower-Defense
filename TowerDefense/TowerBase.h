@@ -1,5 +1,9 @@
 ﻿#pragma once
+#include <list>
+#include <queue>
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include "Projectile.h"
 
 
 namespace td {
@@ -8,17 +12,24 @@ namespace td {
 	{
 	public:
 		explicit TowerBase(const sf::Vector2f& position);
+		virtual ~TowerBase() = default;
 		virtual void Update();
 		virtual void Render(sf::RenderWindow& window) const;
 
 		float GetRadius() const { return m_rangeRadius; }
 		sf::Vector2f GetPosition() const { return m_position; }
 
-		bool IsPointInsideRadius(const sf::Vector2f position) const;
+		bool IsPointInsideRadius(sf::Vector2f position) const;
+		void AddTarget(const sf::Vector2f& position);
 
 	private:
 		float m_rangeRadius;
 		sf::Vector2f m_position;
+		float m_shotCooldown;
 
+		std::queue<sf::Vector2f> m_enemyTargetPositions;
+		std::list<Projectile> m_projectilePool;
+
+		void Shoot();
 	};
 }

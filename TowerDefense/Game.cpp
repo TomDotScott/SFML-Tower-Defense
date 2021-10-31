@@ -19,6 +19,8 @@ td::Game::Game() :
 	ReadLevelData("Assets/waves.csv");
 
 	m_towers.emplace_back(TowerBase({ 200, 270 }));
+	m_towers.emplace_back(TowerBase({ 680, 510 }));
+	m_towers.emplace_back(TowerBase({ 950, 210 }));
 }
 
 void td::Game::Update(const sf::Vector2i& mousePosition)
@@ -49,10 +51,8 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 			{
 				if (tower.IsPointInsideRadius(enemy.GetPosition()))
 				{
-					printf("I'm in the radius\n");
-				}else
-				{
-					printf("I'm not in the radius\n");
+					sf::Vector2f targetPosition = enemy.GetPosition() + enemy.GetMovementVector() * 75.f;
+					tower.AddTarget(targetPosition);
 				}
 			}
 

@@ -26,6 +26,8 @@ namespace td {
 
 		eState GetState() const { return m_state; }
 		sf::Vector2f GetPosition() const { return m_position; }
+		sf::Vector2f GetMovementVector() const { return m_currentMovementVector; }
+
 
 
 		void Spawn();

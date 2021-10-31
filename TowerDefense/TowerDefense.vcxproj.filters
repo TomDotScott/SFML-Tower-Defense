@@ -30,6 +30,9 @@
     <ClCompile Include="TowerBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TowerBase.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

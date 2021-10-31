@@ -21,6 +21,12 @@ namespace td
 			v /= magnitude(v);
 		}
 
+		inline sf::Vector2f normalise_vector(const sf::Vector2f& v)
+		{
+			const float mag = magnitude(v);
+			return { v.x / mag, v.y / mag };
+		}
+
 		inline bool approximately_equal(const float a, const float b)
 		{
 			return std::fabs(a - b) <= ((std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * std::numeric_limits<float>::epsilon());
