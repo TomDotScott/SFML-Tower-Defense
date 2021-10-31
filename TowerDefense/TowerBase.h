@@ -16,6 +16,9 @@ namespace td {
 		virtual void Update();
 		virtual void Render(sf::RenderWindow& window) const;
 
+		// TODO: Change this to GetActiveProjectiles
+		std::list<Projectile>& GetProjectiles();
+
 		float GetRadius() const { return m_rangeRadius; }
 		sf::Vector2f GetPosition() const { return m_position; }
 

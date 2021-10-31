@@ -1,12 +1,9 @@
 ﻿#pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "EnemyStats.h"
 
 namespace td {
-	enum class eEnemyType {
-		e_red, e_green, e_blue
-	};
-
 	class Enemy
 	{
 	public:
@@ -16,6 +13,8 @@ namespace td {
 		void Update();
 
 		void Render(sf::RenderWindow& window) const;
+
+		void TakeDamage(int dmgAmount);
 
 		enum class eState
 		{
@@ -28,7 +27,7 @@ namespace td {
 		sf::Vector2f GetPosition() const { return m_position; }
 		sf::Vector2f GetMovementVector() const { return m_currentMovementVector; }
 
-
+		bool IsActive() const { return m_visible; }
 
 		void Spawn();
 
@@ -37,10 +36,9 @@ namespace td {
 		sf::Vector2f m_currentGoalPosition;
 		sf::Vector2f m_currentMovementVector;
 
-		float m_speed;
-		sf::Vector2f m_position;
+		EnemyStats m_stats;
 
-		sf::Color m_colour;
+		sf::Vector2f m_position;
 
 		bool m_visible;
 		eState m_state;

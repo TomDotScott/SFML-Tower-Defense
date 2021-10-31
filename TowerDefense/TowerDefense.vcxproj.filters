@@ -59,5 +59,8 @@
     <ClInclude Include="Projectile.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

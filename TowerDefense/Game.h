@@ -30,6 +30,8 @@ namespace td {
 
 		std::vector<TowerBase> m_towers;
 
+		void CheckCollisions();
+
 		// TODO: refactor this into a LevelData Class
 		struct EnemyData
 		{

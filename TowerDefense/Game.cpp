@@ -36,6 +36,8 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 	}
 
 	if (!m_enemies.empty()) {
+		printf("Active enemies: %i\n", m_enemies.size());
+
 		// Update the enemies
 		for (auto& enemy : m_enemies)
 		{
@@ -58,6 +60,8 @@ void td::Game::Update(const sf::Vector2i& mousePosition)
 
 			tower.Update();
 		}
+
+		CheckCollisions();
 
 		// If the enemies are dead, or they have completed the track, remove them
 		std::erase_if(m_enemies, 
@@ -90,6 +94,35 @@ void td::Game::Render(sf::RenderWindow& window) const
 	}
 }
 
+void td::Game::CheckCollisions()
+{
+	for(auto& tower : m_towers)
+	{
+		for(auto& projectile : tower.GetProjectiles())
+		{
+			if(projectile.IsActive())
+			{
+				const sf::Vector2f projectilePosition = projectile.GetPosition();
+				for(auto& enemy : m_enemies)
+				{
+					const sf::Vector2f topLeft = enemy.GetPosition();
+
+					const sf::Vector2f bottomRight = {
+						topLeft.x + constants::k_ENEMY_SIZE,
+						topLeft.y + constants::k_ENEMY_SIZE
+					};
+
+					if((projectilePosition.x > topLeft.x && projectilePosition.x < bottomRight.x) && (projectilePosition.y > topLeft.y && projectilePosition.y < bottomRight.y))
+					{
+						projectile.SetActive(false);
+						enemy.TakeDamage(projectile.GetDamage());
+					}
+				}
+			}
+		}
+	}
+}
+
 void td::Game::StartSpawnNextWave()
 {
 	// Get the data loaded from the csv
@@ -114,7 +147,15 @@ void td::Game::UpdateWaveSpawn()
 	if (helper_functions::definitely_less_than(m_timeBetweenSpawns, 0.f))
 	{
 		if (m_enemiesSpawnedSoFar < m_enemyCountThisWave) {
-			m_enemies[m_enemiesSpawnedSoFar++].Spawn();
+			// spawn the next enemy
+			for(auto& enemy : m_enemies)
+			{
+				if(!enemy.IsActive())
+				{
+					enemy.Spawn();
+					break;
+				}
+			}
 
 			m_timeBetweenSpawns = constants::k_TIME_BETWEEN_SPAWN;
 		}

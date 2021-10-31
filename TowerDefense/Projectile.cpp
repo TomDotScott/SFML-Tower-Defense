@@ -7,12 +7,13 @@
 
 td::Projectile::Projectile() :
 	m_speed(0.f),
+	m_damage(0),
 	m_lifetime(1.5f),
 	m_active(false)
 {
 }
 
-void td::Projectile::Init(const sf::Vector2f& startPosition, const sf::Vector2f& targetPosition, const float speed)
+void td::Projectile::Init(const sf::Vector2f& startPosition, const sf::Vector2f& targetPosition, const int damage, const float speed)
 {
 	m_position = startPosition;
 	m_movementVector = helper_functions::normalise_vector(targetPosition - startPosition);
@@ -20,6 +21,7 @@ void td::Projectile::Init(const sf::Vector2f& startPosition, const sf::Vector2f&
 	// TODO: Replace the magic numbers
 	m_lifetime = 1.5f;
 	m_active = true;
+	m_damage = damage;
 }
 
 void td::Projectile::Update()
@@ -29,7 +31,7 @@ void td::Projectile::Update()
 		m_position += m_movementVector * m_speed * GlobalTime::DeltaTime();
 
 		m_lifetime -= GlobalTime::DeltaTime();
-		if(m_lifetime < 0.f)
+		if (m_lifetime < 0.f)
 		{
 			m_active = false;
 		}

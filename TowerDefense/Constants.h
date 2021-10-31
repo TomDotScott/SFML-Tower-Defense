@@ -13,6 +13,8 @@ namespace td::constants
 	constexpr float k_MIN_DISTANCE = 0.5f;
 
 	constexpr float k_PROJECTILE_SPEED = 200.f;
+	constexpr int k_PROJECTILE_DAMAGE = 50;
+	constexpr float k_ENEMY_SIZE = 64.f;
 
 	const static std::array<sf::Vector2f, 10> k_LEVEL_ONE_WAYPOINTS {
 		sf::Vector2f(0.f, 360.f),

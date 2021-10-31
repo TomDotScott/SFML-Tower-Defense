@@ -9,7 +9,7 @@
 td::TowerBase::TowerBase(const sf::Vector2f& position) :
 	m_rangeRadius(128.f),
 	m_position(position),
-	m_shotCooldown(0.1f)
+	m_shotCooldown(0.2f)
 {
 
 }
@@ -23,7 +23,7 @@ void td::TowerBase::Update()
 		if(!m_enemyTargetPositions.empty())
 		{
 			Shoot();
-			m_shotCooldown = 0.1f;
+			m_shotCooldown = 0.2f;
 		}
 	}
 
@@ -63,6 +63,11 @@ void td::TowerBase::Render(sf::RenderWindow& window) const
 	}
 }
 
+std::list<td::Projectile>& td::TowerBase::GetProjectiles()
+{
+	return m_projectilePool;
+}
+
 bool td::TowerBase::IsPointInsideRadius(const sf::Vector2f position) const
 {
 	const sf::Vector2f dxy = position - m_position;
@@ -81,7 +86,7 @@ void td::TowerBase::Shoot()
 	if(m_projectilePool.empty())
 	{
 		m_projectilePool.emplace_back();
-		m_projectilePool.back().Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_SPEED);
+		m_projectilePool.back().Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_DAMAGE, constants::k_PROJECTILE_SPEED);
 	}
 	else {
 		// Find the first inactive projectile
@@ -96,12 +101,12 @@ void td::TowerBase::Shoot()
 		}
 
 		if (inactiveProj) {
-			inactiveProj->Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_SPEED);
+			inactiveProj->Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_DAMAGE, constants::k_PROJECTILE_SPEED);
 		}else
 		{
 			// If all the projectiles are active, then we need to create a new one to shoot
 			m_projectilePool.emplace_back();
-			m_projectilePool.back().Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_SPEED);
+			m_projectilePool.back().Init(m_position, m_enemyTargetPositions.front(), constants::k_PROJECTILE_DAMAGE, constants::k_PROJECTILE_SPEED);
 		}
 	}
 }

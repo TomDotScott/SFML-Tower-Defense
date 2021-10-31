@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyStats.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GlobalTime.h" />
     <ClInclude Include="Helpers.h" />

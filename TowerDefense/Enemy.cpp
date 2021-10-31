@@ -7,9 +7,8 @@
 td::Enemy::Enemy() :
 	m_currentWaypointIndex(1),
 	m_currentGoalPosition(constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
-	m_speed(100.f),
+	m_stats(k_RED_STATS),
 	m_position(-1000.f, 360.f),
-	m_colour(239, 29, 231),
 	m_visible(false),
 	m_state(eState::e_alive)
 {
@@ -19,7 +18,7 @@ td::Enemy::Enemy() :
 td::Enemy::Enemy(const eEnemyType type) :
 	m_currentWaypointIndex(1),
 	m_currentGoalPosition(constants::k_LEVEL_ONE_WAYPOINTS[m_currentWaypointIndex]),
-	m_speed(100.f),
+	m_stats(k_RED_STATS),
 	m_position(0.f, 360.f),
 	m_visible(false),
 	m_state(eState::e_alive)
@@ -27,18 +26,15 @@ td::Enemy::Enemy(const eEnemyType type) :
 	switch (type)
 	{
 	case eEnemyType::e_red:
-		m_speed = 100.f;
-		m_colour = sf::Color::Red;
+		m_stats = k_RED_STATS;
 		break;
 	case eEnemyType::e_green:
-		m_speed = 300.f;
-		m_colour = sf::Color::Green;
+		m_stats = k_GREEN_STATS;
 		break;
 	case eEnemyType::e_blue:
-		m_speed = 150.f;
-		m_colour = sf::Color::Blue;
+		m_stats = k_BLUE_STATS;
 		break;
-	default: ;
+	default:;
 	}
 
 
@@ -58,11 +54,48 @@ void td::Enemy::Update()
 void td::Enemy::Render(sf::RenderWindow& window) const
 {
 	if (m_visible) {
-		sf::RectangleShape rect({ 64.f, 64.f });
+		sf::RectangleShape rect({ constants::k_ENEMY_SIZE, constants::k_ENEMY_SIZE });
 		rect.setOrigin(32, 32);
-		rect.setFillColor(m_colour);
+
+		switch (m_stats.m_Type) {
+		case eEnemyType::e_red:
+			rect.setFillColor(sf::Color::Red);
+			break;
+		case eEnemyType::e_green:
+			rect.setFillColor(sf::Color::Green);
+			break;
+		case eEnemyType::e_blue:
+			rect.setFillColor(sf::Color::Blue);
+			break;
+		default:;
+		}
+
 		rect.setPosition(m_position);
 		window.draw(rect);
+	}
+}
+
+void td::Enemy::TakeDamage(const int dmgAmount)
+{
+	m_stats.m_Health -= dmgAmount;
+	if (m_stats.m_Health <= 0)
+	{
+		switch (m_stats.m_Type) {
+			case eEnemyType::e_red: 
+				m_visible = false;
+				m_state = eState::e_dead;
+			break;
+		case eEnemyType::e_green: 
+			// Turn blue
+			m_stats = k_BLUE_STATS;
+			break;
+		case eEnemyType::e_blue: 
+			m_stats = k_RED_STATS;
+			break;
+		default: 
+			printf("UNKNOWN ENEMY TYPE\n");
+			break;
+		}
 	}
 }
 
@@ -74,7 +107,7 @@ void td::Enemy::Spawn()
 void td::Enemy::Move()
 {
 	// Move the automaton
-	m_position += m_currentMovementVector * m_speed * GlobalTime::DeltaTime();
+	m_position += m_currentMovementVector * m_stats.m_Speed * GlobalTime::DeltaTime();
 }
 
 void td::Enemy::CheckWaypoints()
